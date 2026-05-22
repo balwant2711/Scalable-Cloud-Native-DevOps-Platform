@@ -1,0 +1,376 @@
+{% extends "base.html" %} {% block header_title %} Dashboard {% endblock %} {%
+block content %}
+<div class="space-y-6">
+  <!-- 🚨 RUNNING NOTICE -->
+  <div
+    class="overflow-hidden rounded-xl border border-yellow-500 bg-yellow-500/10"
+  >
+    <div class="marquee text-yellow-300 text-sm py-2 px-4 font-medium">
+      ⚠ Before running any template or ZIP deployment, please review the
+      Deployment Guidelines (Do's & Don'ts) carefully to avoid infrastructure or
+      AWS configuration failures.
+    </div>
+  </div>
+
+  <!-- 🔥 TOP STATUS -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <a href="/docker" class="card-glow text-center block"
+      >🐳 Docker<br /><span class="badge-success">Built</span></a
+    >
+    <a href="/kubernetes" class="card-glow text-center block"
+      >☸️ Kubernetes<br /><span class="badge-running">Running</span></a
+    >
+    <a href="/monitoring" class="card-glow text-center block"
+      >📊 Prometheus<br /><span class="badge-success">Monitoring</span></a
+    >
+    <a href="/monitoring" class="card-glow text-center block"
+      >📈 Grafana<br /><span class="badge-success">Live</span></a
+    >
+  </div>
+
+  <!-- 📊 STATS -->
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="card-glow">
+      <div class="text-xs">Total Jobs</div>
+      <div class="text-2xl">{{ jobs|length }}</div>
+    </div>
+
+    {% set successful = jobs|selectattr("status", "equalto", "Success")|list %}
+    <div class="card-glow">
+      <div class="text-xs">Successful</div>
+      <div class="text-2xl text-emerald-400">{{ successful|length }}</div>
+    </div>
+
+    {% set running = jobs|selectattr("status", "equalto", "Running")|list %} {%
+    set queued = jobs|selectattr("status", "equalto", "Queued")|list %}
+    <div class="card-glow">
+      <div class="text-xs">Running</div>
+      <div class="text-2xl text-yellow-300">
+        {{ running|length + queued|length }}
+      </div>
+    </div>
+  </div>
+
+  <!-- ⚡ ACTIONS -->
+  <div class="flex justify-between">
+    <h2 class="section-title">Deployments</h2>
+    <div class="flex gap-2">
+      <a href="{{ url_for('deploy_template') }}" class="btn-primary text-xs"
+        >Template</a
+      >
+      <a
+        href="{{ url_for('deploy_custom') }}"
+        class="bg-emerald-600 px-3 py-2 rounded text-xs"
+        >ZIP</a
+      >
+      <a
+        href="{{ url_for('how_it_works') }}"
+        class="bg-sky-600 px-3 py-2 rounded text-xs"
+        >Workflow</a
+      >
+    </div>
+  </div>
+
+  <!-- Jobs Table -->
+  <div class="card-glow">
+    <button
+      onclick="toggleJobsTable()"
+      class="w-full flex justify-between items-center text-left mb-3"
+    >
+      <span class="text-sm font-semibold text-slate-200"> 📂 Your Jobs </span>
+
+      <span id="jobsArrow">▼</span>
+    </button>
+    <div id="jobsTableContent">
+      {% if jobs %}
+      <div
+        class="table-container max-h-[400px] overflow-y-auto overflow-x-auto rounded-xl border border-slate-700"
+      >
+        <table class="w-full text-sm text-left dashboard-table">
+          <thead class="bg-slate-950/80 text-slate-400 text-xs">
+            <tr>
+              <th>Job ID</th>
+              <th>Mode</th>
+              <th>Template</th>
+              <th>Status</th>
+              <th>Main Output</th>
+              <th>Created</th>
+              <th>Finished</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody class="bg-slate-950/60">
+            {% for job in jobs %}
+            <tr>
+              <td class="text-slate-200">{{ job.id }}</td>
+
+              <td>
+                <span
+                  class="px-2 py-0.5 text-[11px] rounded-full bg-slate-800 text-slate-200"
+                >
+                  {{ job.mode|capitalize }}
+                </span>
+              </td>
+
+              <td class="text-slate-300 text-xs">
+                {{ job.template_name if job.template_name else "-" }}
+              </td>
+
+              <td>
+                {% if job.status == "Success" %}
+                <span class="badge-success">Success</span>
+                {% elif job.status == "Failed" %}
+                <span class="badge-failed">Failed</span>
+                {% elif job.status == "Running" or job.status == "Queued" %}
+                <span class="badge-running">{{ job.status }}</span>
+                {% elif job.status == "Destroyed" %}
+                <span class="badge-failed">Destroyed</span>
+                {% else %}
+                <span
+                  class="px-2 py-0.5 text-[11px] rounded-full bg-slate-700 text-slate-200"
+                >
+                  {{ job.status }}
+                </span>
+                {% endif %}
+              </td>
+
+              <td class="text-slate-300 text-xs max-w-[220px]">
+                {% if job.primary_output %}
+                <span class="font-mono break-all">
+                  {{ job.primary_output }}
+                </span>
+                {% else %}
+                <span class="text-slate-600">-</span>
+                {% endif %}
+              </td>
+
+              <td class="text-slate-400 text-[11px] whitespace-nowrap">
+                {{ job.created_at.strftime("%Y-%m-%d %H:%M") if job.created_at
+                else "-" }}
+              </td>
+
+              <td class="text-slate-400 text-[11px] whitespace-nowrap">
+                {{ job.finished_at.strftime("%Y-%m-%d %H:%M") if job.finished_at
+                else "-" }}
+              </td>
+
+              <td>
+                <div class="flex flex-wrap gap-2 text-[11px]">
+                  {% if job.log_file_path %}
+                  <a
+                    href="{{ url_for('view_job_logs', job_id=job.id) }}"
+                    class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700"
+                  >
+                    Logs
+                  </a>
+                  {% endif %} {% if job.outputs_json %}
+                  <a
+                    href="{{ url_for('view_job_outputs', job_id=job.id) }}"
+                    class="px-2 py-1 rounded bg-emerald-600 hover:bg-emerald-500"
+                  >
+                    Outputs
+                  </a>
+                  {% endif %} {% if job.status not in ["Destroyed", "Destroy
+                  Failed"] %}
+                  <button
+                    type="button"
+                    onclick="openDestroyModal('{{ job.id }}')"
+                    class="px-2 py-1 rounded bg-red-600 hover:bg-red-500"
+                  >
+                    Destroy
+                  </button>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-sm text-slate-500">
+        No deployment jobs yet. Start with a
+        <a
+          href="{{ url_for('deploy_template') }}"
+          class="text-sky-400 underline"
+        >
+          Template Deployment
+        </a>
+        or
+        <a
+          href="{{ url_for('deploy_custom') }}"
+          class="text-emerald-400 underline"
+        >
+          Custom Terraform ZIP </a
+        >.
+      </p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Destroy Modal -->
+  <div
+    id="destroyModal"
+    class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+  >
+    <div
+      class="bg-slate-900 border border-slate-700 rounded-xl p-5 w-full max-w-md card-glow"
+    >
+      <h2 class="text-lg font-semibold mb-2 text-red-400">Confirm Destroy</h2>
+      <p class="text-sm text-slate-300 mb-4">
+        This will run <code>terraform destroy</code> and delete all
+        infrastructure created by this job. <br /><br />
+        Please enter AWS credentials to continue.
+      </p>
+
+      <form id="destroyForm" method="POST">
+        <input type="hidden" id="destroyJobId" />
+
+        <input
+          name="aws_access_key"
+          type="password"
+          placeholder="AWS Access Key ID"
+          required
+          class="mb-2 w-full"
+        />
+
+        <input
+          name="aws_secret_key"
+          type="password"
+          placeholder="AWS Secret Access Key"
+          required
+          class="mb-3 w-full"
+        />
+
+        <input
+          name="aws_region"
+          type="text"
+          value="ap-south-1"
+          class="mb-3 w-full"
+        />
+
+        <div class="flex justify-between">
+          <button
+            type="button"
+            onclick="closeDestroyModal()"
+            class="px-3 py-1 text-sm bg-slate-700 rounded hover:bg-slate-600"
+          >
+            Cancel
+          </button>
+          <button type="submit" class="btn-danger text-sm">
+            Confirm Destroy
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- 📊 METRICS -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="card-glow">
+      <p>CPU</p>
+      <div class="progress"><div class="bar" style="width: 65%"></div></div>
+    </div>
+    <div class="card-glow">
+      <p>Memory</p>
+      <div class="progress"><div class="bar" style="width: 48%"></div></div>
+    </div>
+    <div class="card-glow">
+      <p>Pods</p>
+      <div class="text-green-400">2/2</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+
+<script>
+  /* =========================
+   ✅ TOGGLE GUIDELINES
+========================= */
+
+  function toggleGuidelines() {
+    const content = document.getElementById("guidelinesContent");
+    const arrow = document.getElementById("guideArrow");
+
+    content.classList.toggle("hidden");
+
+    arrow.innerText = content.classList.contains("hidden") ? "▼" : "▲";
+  }
+  /* =========================
+   📂 TOGGLE JOBS TABLE
+========================= */
+
+  function toggleJobsTable() {
+    const content = document.getElementById("jobsTableContent");
+    const arrow = document.getElementById("jobsArrow");
+
+    content.classList.toggle("hidden");
+
+    arrow.innerText = content.classList.contains("hidden") ? "▼" : "▲";
+  }
+  /* =========================
+   🔥 DESTROY MODAL FUNCTIONS
+========================= */
+
+  function openDestroyModal(jobId) {
+    const form = document.getElementById("destroyForm");
+    if (form) {
+      form.action = `/jobs/${jobId}/destroy`;
+    }
+    document.getElementById("destroyModal").classList.remove("hidden");
+  }
+
+  function closeDestroyModal() {
+    document.getElementById("destroyModal").classList.add("hidden");
+  }
+
+  /* =========================
+   🔴 LIVE LOGS (SOCKET.IO)
+========================= */
+
+  const socket = io();
+
+  socket.on("connect", () => {
+    console.log("✅ Connected to server");
+  });
+
+  socket.on("log", function (msg) {
+    const terminal = document.getElementById("terminal");
+
+    if (!terminal) return;
+
+    const line = document.createElement("div");
+    line.textContent = msg.data;
+
+    // 🎨 Color logic
+    if (msg.data.toLowerCase().includes("error")) {
+      line.style.color = "red";
+    } else if (msg.data.toLowerCase().includes("complete")) {
+      line.style.color = "lime";
+    } else {
+      line.style.color = "#22c55e"; // green
+    }
+
+    terminal.appendChild(line);
+    terminal.scrollTop = terminal.scrollHeight;
+  });
+
+  /* =========================
+   🚀 TRIGGER DEPLOY
+========================= */
+
+  function startLiveDeploy(jobId) {
+    const terminal = document.getElementById("terminal");
+
+    // clear old logs
+    if (terminal) {
+      terminal.innerHTML = "";
+    }
+
+    fetch(`/run-live/${jobId}`)
+      .then((res) => console.log("Deployment started"))
+      .catch((err) => console.error(err));
+  }
+</script>
+{% endblock %}

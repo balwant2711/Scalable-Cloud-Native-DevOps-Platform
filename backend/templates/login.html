@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Login – Scalable Cloud-Native DevOps Platform</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/main.css') }}"
+    />
+
+    <style>
+      body {
+        overflow: hidden;
+        background: #020617;
+      }
+
+      .glass-card {
+        background: rgba(15, 23, 42, 0.72);
+
+        border: 1px solid rgba(148, 163, 184, 0.12);
+
+        backdrop-filter: blur(24px);
+
+        border-radius: 28px;
+
+        box-shadow:
+          0 10px 40px rgba(0, 0, 0, 0.45),
+          inset 0 1px 1px rgba(255, 255, 255, 0.03);
+
+        transition: all 0.35s ease;
+      }
+
+      .glass-card:hover {
+        transform: translateY(-5px);
+
+        border-color: rgba(56, 189, 248, 0.45);
+
+        box-shadow:
+          0 25px 60px rgba(0, 0, 0, 0.55),
+          0 0 30px rgba(56, 189, 248, 0.15);
+      }
+
+      .bg-grid {
+        background-image:
+          linear-gradient(
+            to right,
+            rgba(255, 255, 255, 0.05) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.05) 1px,
+            transparent 1px
+          );
+
+        background-size: 45px 45px;
+      }
+
+      .floating {
+        animation: floating 6s ease-in-out infinite;
+      }
+
+      @keyframes floating {
+        0% {
+          transform: translateY(0px);
+        }
+
+        50% {
+          transform: translateY(-8px);
+        }
+
+        100% {
+          transform: translateY(0px);
+        }
+      }
+    </style>
+  </head>
+
+  <body
+    class="h-full min-h-screen flex items-center justify-center text-slate-100"
+  >
+    <!-- GRID -->
+    <div class="absolute inset-0 bg-grid opacity-[0.05]"></div>
+
+    <!-- BLOBS -->
+    <div class="absolute inset-0 overflow-hidden -z-10">
+      <div
+        class="absolute -top-32 -left-20 h-80 w-80 rounded-full bg-sky-500/20 blur-[100px]"
+      ></div>
+
+      <div
+        class="absolute top-40 right-0 h-80 w-80 rounded-full bg-purple-500/20 blur-[100px]"
+      ></div>
+
+      <div
+        class="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-emerald-500/20 blur-[100px]"
+      ></div>
+    </div>
+
+    <!-- HOME BUTTON -->
+    <a
+      href="/"
+      class="absolute top-6 left-6 rounded-full border border-slate-700 bg-slate-900/80 px-5 py-2 text-xs text-slate-200 hover:border-sky-400 hover:text-sky-300 transition"
+    >
+      ← Back to Home
+    </a>
+
+    <!-- STATUS -->
+    <div
+      class="absolute top-6 right-6 flex items-center gap-3 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs text-emerald-300"
+    >
+      <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+
+      Platform Online
+    </div>
+
+    <!-- LOGIN CONTAINER -->
+    <div class="relative z-10 w-full max-w-md mx-auto px-4">
+      <div class="glass-card p-8 floating">
+        <!-- HEADER -->
+        <div class="flex items-center gap-4 mb-6">
+          <div
+            class="h-14 w-14 rounded-2xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center shadow-lg shadow-sky-500/20"
+          >
+            <span class="text-3xl">☁️</span>
+          </div>
+
+          <div>
+            <div
+              class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400"
+            >
+              Scalable Cloud-Native
+            </div>
+
+            <div class="text-xl text-slate-100 font-bold">DevOps Platform</div>
+
+            <p class="text-xs text-slate-400 mt-1">
+              Deploy • Scale • Monitor Applications
+            </p>
+          </div>
+        </div>
+
+        <!-- ALERTS -->
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+
+        <div class="mb-4 space-y-2">
+          {% for category, message in messages %}
+
+          <div
+            class="text-xs px-4 py-3 rounded-2xl border border-red-500/40 bg-red-900/30 text-red-100"
+          >
+            {{ message }}
+          </div>
+
+          {% endfor %}
+        </div>
+
+        {% endif %} {% endwith %}
+
+        <!-- FORM -->
+        <form method="POST" class="space-y-5">
+          <!-- EMAIL -->
+          <div>
+            <label class="block text-xs mb-2 font-medium text-slate-300">
+              Username / Email
+            </label>
+
+            <input
+              type="text"
+              name="email"
+              required
+              placeholder="admin@example.com"
+              class="w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-sky-400 focus:outline-none"
+            />
+          </div>
+
+          <!-- PASSWORD -->
+          <div>
+            <label class="block text-xs mb-2 font-medium text-slate-300">
+              Password
+            </label>
+
+            <input
+              type="password"
+              name="password"
+              required
+              placeholder="••••••••"
+              class="w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-sky-400 focus:outline-none"
+            />
+          </div>
+
+          <!-- INFO -->
+          <div
+            class="flex items-center justify-between text-[11px] text-slate-500"
+          >
+            <span> Demo account is auto-created on first run. </span>
+          </div>
+
+          <!-- BUTTON -->
+          <button
+            type="submit"
+            class="w-full rounded-2xl bg-sky-500 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-sky-400 transition shadow-[0_0_30px_rgba(56,189,248,0.4)]"
+          >
+            🚀 Login to Dashboard
+          </button>
+        </form>
+
+        <!-- FOOTER -->
+        <div class="mt-8 text-center">
+          <p class="text-xs text-slate-500 leading-6">
+            Scalable Cloud-Native DevOps Platform
+
+            <br />
+
+            Built using AWS • Terraform • Docker • Kubernetes • Grafana
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

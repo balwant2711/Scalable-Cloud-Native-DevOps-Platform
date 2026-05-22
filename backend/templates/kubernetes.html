@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block header_title %} Kubernetes Dashboard {%
+endblock %} {% block content %}
+<h1 class="section-title">☸️ Kubernetes Dashboard</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="card-glow">
+    <h3>Pods</h3>
+    <p class="text-emerald-400">2 Running</p>
+  </div>
+
+  <div class="card-glow">
+    <h3>Deployments</h3>
+    <p>portfolio-deployment</p>
+  </div>
+
+  <div class="card-glow">
+    <h3>Service</h3>
+    <p>NodePort : 30007</p>
+  </div>
+</div>
+<!-- ☸️ K8s -->
+<div class="card-glow">
+  <h3>Kubernetes Controls</h3>
+  <div class="flex gap-2">
+    <button class="btn-primary text-xs">Deploy</button>
+    <button class="bg-purple-600 px-2 py-1 rounded text-xs">Scale</button>
+    <button class="bg-yellow-600 px-2 py-1 rounded text-xs">Restart</button>
+  </div>
+</div>
+
+{% endblock %}

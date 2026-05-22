@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Troubleshooting – Scalable Cloud-Native DevOps Platform</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      body {
+        overflow-x: hidden;
+        background: #020617;
+        color: white;
+      }
+
+      .bg-grid {
+        background-image:
+          linear-gradient(
+            to right,
+            rgba(255, 255, 255, 0.05) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.05) 1px,
+            transparent 1px
+          );
+
+        background-size: 45px 45px;
+      }
+
+      .glass-card {
+        background: rgba(15, 23, 42, 0.72);
+
+        border: 1px solid rgba(148, 163, 184, 0.12);
+
+        backdrop-filter: blur(24px);
+
+        border-radius: 28px;
+
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+
+        transition: all 0.35s ease;
+      }
+
+      .glass-card:hover {
+        transform: translateY(-8px);
+
+        border-color: rgba(56, 189, 248, 0.45);
+
+        box-shadow:
+          0 25px 60px rgba(0, 0, 0, 0.55),
+          0 0 30px rgba(56, 189, 248, 0.15);
+      }
+
+      .text-gradient {
+        background: linear-gradient(90deg, #38bdf8, #a855f7);
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen">
+    <!-- GRID -->
+    <div class="absolute inset-0 bg-grid opacity-[0.05]"></div>
+
+    <!-- BLOBS -->
+    <div class="absolute inset-0 overflow-hidden -z-10">
+      <div
+        class="absolute -top-32 -left-20 h-80 w-80 rounded-full bg-sky-500/20 blur-[100px]"
+      ></div>
+
+      <div
+        class="absolute top-40 right-0 h-80 w-80 rounded-full bg-purple-500/20 blur-[100px]"
+      ></div>
+
+      <div
+        class="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-emerald-500/20 blur-[100px]"
+      ></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-10 relative z-10">
+      <!-- TOP -->
+      <div class="flex items-center justify-between mb-10">
+        <a
+          href="/"
+          class="rounded-full border border-slate-700 bg-slate-900/80 px-5 py-2 text-xs text-slate-200 hover:border-sky-400 hover:text-sky-300 transition"
+        >
+          ← Back to Home
+        </a>
+
+        <div
+          class="flex items-center gap-3 rounded-full border border-red-500/20 bg-red-500/10 px-4 py-2 text-xs text-red-300"
+        >
+          <span class="h-2 w-2 rounded-full bg-red-400 animate-pulse"></span>
+          Troubleshooting Center Active
+        </div>
+      </div>
+
+      <!-- TITLE -->
+      <div class="text-center mb-16">
+        <h1 class="text-6xl font-bold leading-tight">
+          Troubleshooting
+          <span class="text-gradient"> Center </span>
+        </h1>
+
+        <p class="mt-6 text-lg text-slate-300 max-w-3xl mx-auto leading-8">
+          Common deployment, infrastructure, networking, Kubernetes and
+          Terraform issues with solutions.
+        </p>
+      </div>
+
+      <!-- TROUBLESHOOT GRID -->
+      <div class="grid gap-8 md:grid-cols-2">
+        <!-- ISSUE -->
+        <div class="glass-card p-8">
+          <h3 class="text-2xl font-semibold text-red-300 mb-4">
+            Terraform Init Failed
+          </h3>
+
+          <p class="text-sm text-slate-300 leading-7">
+            Cause: Terraform modules or providers are not initialized properly.
+            <br /><br />
+            Fix: Run terraform init before terraform apply.
+          </p>
+        </div>
+
+        <div class="glass-card p-8">
+          <h3 class="text-2xl font-semibold text-yellow-300 mb-4">
+            AWS Credentials Invalid
+          </h3>
+
+          <p class="text-sm text-slate-300 leading-7">
+            Cause: Incorrect AWS Access Key or Secret Key.
+            <br /><br />
+            Fix: Configure AWS CLI again using aws configure.
+          </p>
+        </div>
+
+        <div class="glass-card p-8">
+          <h3 class="text-2xl font-semibold text-sky-300 mb-4">
+            Kubernetes Pods CrashLoopBackOff
+          </h3>
+
+          <p class="text-sm text-slate-300 leading-7">
+            Cause: Container startup failure or invalid image.
+            <br /><br />
+            Fix: Check pod logs using kubectl logs.
+          </p>
+        </div>
+
+        <div class="glass-card p-8">
+          <h3 class="text-2xl font-semibold text-emerald-300 mb-4">
+            Docker Build Failed
+          </h3>
+
+          <p class="text-sm text-slate-300 leading-7">
+            Cause: Dockerfile syntax error or missing dependencies.
+            <br /><br />
+            Fix: Validate Dockerfile and rebuild image.
+          </p>
+        </div>
+
+        <div class="glass-card p-8">
+          <h3 class="text-2xl font-semibold text-purple-300 mb-4">
+            CI/CD Pipeline Failed
+          </h3>
+
+          <p class="text-sm text-slate-300 leading-7">
+            Cause: Build/test stage failure.
+            <br /><br />
+            Fix: Review pipeline logs and dependency versions.
+          </p>
+        </div>
+
+        <div class="glass-card p-8">
+          <h3 class="text-2xl font-semibold text-cyan-300 mb-4">
+            GitHub Repository Not Detected
+          </h3>
+
+          <p class="text-sm text-slate-300 leading-7">
+            Cause: Invalid repository URL or private repo access denied.
+            <br /><br />
+            Fix: Verify repository URL and authentication.
+          </p>
+        </div>
+
+        <div class="glass-card p-8">
+          <h3 class="text-2xl font-semibold text-orange-300 mb-4">
+            Application Not Accessible
+          </h3>
+
+          <p class="text-sm text-slate-300 leading-7">
+            Cause: Security Group or Load Balancer issue.
+            <br /><br />
+            Fix: Open ports 80 and 443 in AWS Security Groups.
+          </p>
+        </div>
+
+        <div class="glass-card p-8">
+          <h3 class="text-2xl font-semibold text-pink-300 mb-4">
+            VPC/Subnet Misconfiguration
+          </h3>
+
+          <p class="text-sm text-slate-300 leading-7">
+            Cause: Missing route tables or internet gateway.
+            <br /><br />
+            Fix: Configure proper subnet routing and attach IGW.
+          </p>
+        </div>
+
+        <div class="glass-card p-8">
+          <h3 class="text-2xl font-semibold text-indigo-300 mb-4">
+            Monitoring Dashboard Not Loading
+          </h3>
+
+          <p class="text-sm text-slate-300 leading-7">
+            Cause: Grafana or Prometheus service stopped.
+            <br /><br />
+            Fix: Restart monitoring containers/services.
+          </p>
+        </div>
+
+        <div class="glass-card p-8">
+          <h3 class="text-2xl font-semibold text-teal-300 mb-4">
+            Terraform State Lock Error
+          </h3>
+
+          <p class="text-sm text-slate-300 leading-7">
+            Cause: State file locked due to interrupted deployment.
+            <br /><br />
+            Fix: Release state lock carefully before redeployment.
+          </p>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <footer
+        class="mt-20 border-t border-slate-800 pt-8 text-sm text-slate-500"
+      >
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>© 2026 Scalable Cloud-Native DevOps Platform</div>
+
+          <div>AWS • Terraform • Docker • Kubernetes • Grafana</div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

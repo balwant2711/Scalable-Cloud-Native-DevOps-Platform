@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Scalable Cloud-Native DevOps Platform</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <meta
+      name="description"
+      content="Scalable Cloud-Native DevOps Platform – automate infrastructure provisioning, deployment, monitoring and Kubernetes orchestration using AWS, Terraform, Docker and CI/CD pipelines."
+    />
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "system-ui", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        overflow-x: hidden;
+        background: #020617;
+      }
+
+      .bg-animated {
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(29, 78, 216, 0.4),
+            transparent 30%
+          ),
+          radial-gradient(
+            circle at bottom right,
+            rgba(168, 85, 247, 0.25),
+            transparent 35%
+          ),
+          #020617;
+      }
+
+      .glass-card {
+        background: rgba(15, 23, 42, 0.72);
+
+        border: 1px solid rgba(148, 163, 184, 0.12);
+
+        backdrop-filter: blur(24px);
+
+        border-radius: 24px;
+
+        box-shadow:
+          0 10px 40px rgba(0, 0, 0, 0.45),
+          inset 0 1px 1px rgba(255, 255, 255, 0.03);
+
+        transition: all 0.35s ease;
+      }
+
+      .glass-card:hover {
+        transform: translateY(-8px);
+
+        border-color: rgba(56, 189, 248, 0.45);
+
+        box-shadow:
+          0 25px 60px rgba(0, 0, 0, 0.55),
+          0 0 30px rgba(56, 189, 248, 0.15);
+      }
+
+      .text-gradient {
+        background: linear-gradient(90deg, #38bdf8, #a855f7, #f97316);
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+
+      .link-fancy {
+        position: relative;
+      }
+
+      .link-fancy::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 0;
+        height: 1px;
+        background: linear-gradient(90deg, #38bdf8, #a855f7);
+        transition: width 0.2s ease;
+      }
+
+      .link-fancy:hover::after {
+        width: 100%;
+      }
+
+      .marquee {
+        display: inline-block;
+        white-space: nowrap;
+        animation: marquee 20s linear infinite;
+      }
+
+      @keyframes marquee {
+        from {
+          transform: translateX(100%);
+        }
+
+        to {
+          transform: translateX(-100%);
+        }
+      }
+
+      .floating {
+        animation: floating 5s ease-in-out infinite;
+      }
+
+      @keyframes floating {
+        0% {
+          transform: translateY(0px);
+        }
+
+        50% {
+          transform: translateY(-10px);
+        }
+
+        100% {
+          transform: translateY(0px);
+        }
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen text-slate-100 bg-animated">
+    <!-- GRID BACKGROUND -->
+    <div
+      class="absolute inset-0 -z-20 opacity-[0.04]"
+      style="
+        background-image:
+          linear-gradient(to right, white 1px, transparent 1px),
+          linear-gradient(to bottom, white 1px, transparent 1px);
+        background-size: 45px 45px;
+      "
+    ></div>
+
+    <!-- BLOBS -->
+    <div class="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+      <div
+        class="absolute -top-40 -left-10 h-80 w-80 rounded-full bg-sky-500/30 blur-[100px]"
+      ></div>
+
+      <div
+        class="absolute top-40 right-0 h-80 w-80 rounded-full bg-purple-500/30 blur-[100px]"
+      ></div>
+
+      <div
+        class="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-emerald-500/20 blur-[100px]"
+      ></div>
+    </div>
+
+    <div
+      class="relative mx-auto flex min-h-screen max-w-7xl flex-col px-4 pb-16 pt-5 sm:px-6 lg:px-8"
+    >
+      <!-- NAVBAR -->
+      <header class="flex items-center justify-between py-4">
+        <div class="flex items-center gap-4">
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 border border-sky-500/40 shadow-lg shadow-sky-500/30"
+          >
+            ☁️
+          </div>
+
+          <div>
+            <div class="text-xs tracking-[0.2em] uppercase text-slate-400">
+              Scalable Cloud-Native
+            </div>
+
+            <div class="text-sm font-semibold">DevOps Platform</div>
+          </div>
+        </div>
+
+        <nav class="hidden items-center gap-8 text-sm md:flex">
+          <a href="/" class="link-fancy text-slate-300 hover:text-sky-400">
+            Home
+          </a>
+
+          <a
+            href="/workflow"
+            class="link-fancy text-slate-300 hover:text-sky-400"
+          >
+            Workflow
+          </a>
+
+          <a
+            href="/techstack"
+            class="link-fancy text-slate-300 hover:text-sky-400"
+          >
+            Tech Stack
+          </a>
+          <a
+            href="/troubleshoot"
+            class="link-fancy text-slate-300 hover:text-sky-400"
+          >
+            Troubleshoot
+          </a>
+
+          <a
+            href="#founder"
+            class="link-fancy text-slate-300 hover:text-sky-400"
+          >
+            Founder
+          </a>
+        </nav>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="/login"
+            class="rounded-full bg-emerald-500 px-5 py-2 text-xs font-semibold text-slate-950 hover:bg-emerald-400 transition"
+          >
+            Login
+          </a>
+        </div>
+      </header>
+
+      <!-- WARNING BANNER -->
+      <div
+        class="overflow-hidden rounded-2xl border border-yellow-500/20 bg-yellow-500/10 mt-4"
+      >
+        <div class="marquee text-yellow-300 text-sm py-3 px-4 font-medium">
+          ⚠ Before running any deployment template please verify AWS
+          configuration, Terraform installation, VPC setup, IAM permissions,
+          subnet routing and deployment prerequisites carefully.
+        </div>
+      </div>
+
+      <!-- LIVE STATUS -->
+      <div
+        class="mt-5 flex items-center gap-3 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs text-emerald-300 w-fit"
+      >
+        <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+
+        Platform Status: All deployment services operational
+      </div>
+
+      <!-- HERO -->
+      <main
+        class="mt-16 flex flex-1 flex-col gap-16 lg:flex-row lg:items-center lg:justify-between"
+      >
+        <!-- LEFT -->
+        <section class="flex-1">
+          <div
+            class="mb-5 inline-flex items-center gap-2 rounded-full border border-sky-500/30 bg-slate-900/60 px-4 py-2 text-xs text-sky-200"
+          >
+            <span class="rounded-full bg-sky-500/20 px-2 py-1 text-[10px]">
+              NEW
+            </span>
+
+            Cloud-Native DevOps Automation Platform
+          </div>
+
+          <h1
+            class="text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl"
+          >
+            Build, Deploy & Monitor
+
+            <span class="text-gradient"> Cloud Infrastructure </span>
+
+            with a Modern DevOps Platform.
+          </h1>
+
+          <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+            The platform automates infrastructure provisioning, CI/CD pipelines,
+            Docker containerization, Kubernetes orchestration, AWS deployments
+            and cloud monitoring using Terraform, Prometheus and Grafana.
+          </p>
+
+          <!-- BUTTONS -->
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a
+              href="/login"
+              class="rounded-2xl bg-sky-500 px-6 py-3 text-sm font-semibold text-slate-950 shadow-[0_0_35px_rgba(56,189,248,0.6)] hover:bg-sky-400 transition"
+            >
+              🚀 Login & Start Deploying
+            </a>
+
+            <a
+              href="#workflow"
+              class="rounded-2xl border border-slate-700 bg-slate-900/60 px-6 py-3 text-sm hover:border-sky-400 hover:text-sky-300 transition"
+            >
+              ⚙ Explore Workflow
+            </a>
+          </div>
+
+          <!-- FLOATING STATS -->
+          <div class="mt-10 flex flex-wrap gap-4 text-xs">
+            <div class="glass-card px-5 py-4 floating">☁ 15+ AWS Templates</div>
+
+            <div class="glass-card px-5 py-4 floating">⚡ CI/CD Enabled</div>
+
+            <div class="glass-card px-5 py-4 floating">☸ Kubernetes Ready</div>
+
+            <div class="glass-card px-5 py-4 floating">
+              📊 Monitoring Enabled
+            </div>
+          </div>
+        </section>
+
+        <!-- RIGHT PANEL -->
+        <section class="flex-1">
+          <div class="glass-card p-8">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-xl font-semibold text-sky-300">
+                  🚀 Platform Capabilities
+                </h3>
+
+                <p class="mt-2 text-sm text-slate-400">
+                  End-to-End DevOps Automation
+                </p>
+              </div>
+
+              <div
+                class="rounded-full bg-emerald-500/20 px-3 py-1 text-xs text-emerald-300"
+              >
+                ACTIVE
+              </div>
+            </div>
+
+            <div class="mt-8 grid grid-cols-2 gap-5">
+              <div class="rounded-2xl bg-slate-900/70 p-5">
+                ☁ AWS Infrastructure
+              </div>
+
+              <div class="rounded-2xl bg-slate-900/70 p-5">
+                📦 Terraform Automation
+              </div>
+
+              <div class="rounded-2xl bg-slate-900/70 p-5">
+                🐳 Docker Deployment
+              </div>
+
+              <div class="rounded-2xl bg-slate-900/70 p-5">
+                ☸ Kubernetes Orchestration
+              </div>
+
+              <div class="rounded-2xl bg-slate-900/70 p-5">
+                ⚡ CI/CD Pipeline
+              </div>
+
+              <div class="rounded-2xl bg-slate-900/70 p-5">
+                📊 Monitoring Dashboard
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- FEATURES -->
+      <section id="features" class="mt-28">
+        <h2 class="text-4xl font-bold mb-12">Platform Features</h2>
+
+        <div class="grid gap-6 md:grid-cols-3">
+          <div class="glass-card p-6">
+            <h3 class="text-sky-300 text-xl mb-3">📦 Terraform Automation</h3>
+
+            <p class="text-sm text-slate-300 leading-7">
+              Automate cloud infrastructure provisioning using Infrastructure as
+              Code.
+            </p>
+          </div>
+
+          <div class="glass-card p-6">
+            <h3 class="text-emerald-300 text-xl mb-3">🐳 Docker Integration</h3>
+
+            <p class="text-sm text-slate-300 leading-7">
+              Build and deploy containerized applications consistently.
+            </p>
+          </div>
+
+          <div class="glass-card p-6">
+            <h3 class="text-purple-300 text-xl mb-3">
+              ☸ Kubernetes Orchestration
+            </h3>
+
+            <p class="text-sm text-slate-300 leading-7">
+              Handle orchestration, scaling and workload management.
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- FOUNDER SECTION -->
+      <section
+        id="founder"
+        class="mt-28 grid gap-8 lg:grid-cols-[1.2fr,0.8fr] lg:items-center"
+      >
+        <!-- LEFT -->
+        <div>
+          <h2 class="text-4xl font-bold leading-tight">
+            Meet the founder –
+            <span class="text-gradient"> Balwant Singh </span>
+          </h2>
+
+          <p class="mt-6 text-lg leading-8 text-slate-300">
+            I built this platform initially as my major project and then evolved
+            it into a complete cloud-native DevOps product. The goal was simple:
+            simplify infrastructure automation, Kubernetes deployments, CI/CD
+            workflows and cloud monitoring through a modern web platform.
+          </p>
+
+          <p class="mt-5 text-lg leading-8 text-slate-300">
+            My vision is to make
+            <span class="text-sky-300 font-semibold">
+              DevOps and Terraform accessible
+            </span>
+
+            for students, beginners and organizations without forcing them to
+            manually manage complex cloud infrastructure.
+          </p>
+
+          <!-- BUTTONS -->
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a
+              href="https://www.linkedin.com/"
+              target="_blank"
+              class="rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-sky-400 transition shadow-[0_0_25px_rgba(56,189,248,0.4)]"
+            >
+              💼 Connect on LinkedIn
+            </a>
+
+            <span class="text-slate-400"> balwant@cloudinfra.dev </span>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="glass-card p-8">
+          <div class="flex items-center gap-4">
+            <div
+              class="flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-900 border border-sky-500/40 shadow-lg shadow-sky-500/30 text-2xl"
+            >
+              👨‍💻
+            </div>
+
+            <div>
+              <div class="text-xl font-semibold">Balwant Singh</div>
+
+              <div class="text-sm text-slate-400">
+                Founder & Builder, Scalable Cloud-Native DevOps Platform
+              </div>
+            </div>
+          </div>
+
+          <p class="mt-6 text-sm leading-7 text-slate-300">
+            Cloud + DevOps + Python + Terraform. Passionate about building
+            real-world cloud platforms that simplify infrastructure automation
+            and deployment workflows.
+          </p>
+
+          <div class="mt-6 grid grid-cols-2 gap-4 text-sm">
+            <div class="rounded-2xl bg-slate-900/70 p-4">
+              <div class="text-slate-500 text-xs">Stack</div>
+
+              <div class="mt-2">AWS, Terraform, Flask, Docker</div>
+            </div>
+
+            <div class="rounded-2xl bg-slate-900/70 p-4">
+              <div class="text-slate-500 text-xs">Focus</div>
+
+              <div class="mt-2">Cloud Automation & DevOps</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WAITLIST -->
+      <section class="mt-28">
+        <div
+          class="glass-card p-10 lg:flex lg:items-center lg:justify-between lg:gap-10"
+        >
+          <!-- LEFT -->
+          <div class="max-w-2xl">
+            <h2 class="text-4xl font-bold leading-tight">
+              Be part of the next generation of cloud-native deployment
+              platforms.
+            </h2>
+
+            <p class="mt-5 text-lg leading-8 text-slate-300">
+              The platform is continuously evolving with Kubernetes
+              orchestration, monitoring dashboards, CI/CD integrations,
+              multi-cloud support and scalable deployment automation.
+            </p>
+          </div>
+
+          <!-- RIGHT -->
+          <div class="mt-8 lg:mt-0 lg:w-[400px]">
+            <input
+              type="email"
+              placeholder="Your email address"
+              class="w-full rounded-2xl border border-slate-700 bg-slate-950/80 px-5 py-4 text-sm text-slate-100 placeholder:text-slate-500 focus:border-sky-400 focus:outline-none"
+            />
+
+            <button
+              class="mt-4 w-full rounded-2xl bg-sky-500 px-5 py-4 text-sm font-semibold text-slate-950 hover:bg-sky-400 transition shadow-[0_0_30px_rgba(56,189,248,0.5)]"
+            >
+              Join Waitlist
+            </button>
+
+            <p class="mt-4 text-xs text-slate-500">
+              No spam — only product updates and collaboration opportunities.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer
+        id="contact"
+        class="mt-20 border-t border-slate-800 pt-8 text-sm text-slate-500"
+      >
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div class="text-slate-300">
+              © <span id="year"></span>
+
+              Scalable Cloud-Native DevOps Platform
+            </div>
+
+            <div class="mt-2 text-xs text-slate-500">
+              Built using AWS • Terraform • Docker • Kubernetes • Flask •
+              Grafana
+            </div>
+          </div>
+
+          <div class="flex gap-6">
+            <a
+              href="https://github.com/balwant2711/CloudInfra-deploy-engine"
+              class="link-fancy hover:text-sky-300"
+            >
+              GitHub Repo
+            </a>
+
+            <a href="#founder" class="link-fancy hover:text-sky-300">
+              About Founder
+            </a>
+
+            <a
+              href="mailto:balwant@cloudinfra.dev"
+              class="link-fancy hover:text-sky-300"
+            >
+              Contact
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

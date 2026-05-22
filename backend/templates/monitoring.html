@@ -1,0 +1,102 @@
+{% extends "base.html" %} {% block header_title %} Monitoring {% endblock %} {%
+block content %}
+<h1 class="section-title">📊 Monitoring Dashboard</h1>
+<!-- 📊 Monitoring -->
+<div class="card-glow">
+  <h3>Monitoring</h3>
+  <div class="grid grid-cols-3 gap-4">
+    <div>
+      CPU
+      <div class="progress"><div class="bar" style="width: 62%"></div></div>
+    </div>
+    <div>
+      Memory
+      <div class="progress"><div class="bar" style="width: 48%"></div></div>
+    </div>
+    <div class="text-green-400">Healthy</div>
+  </div>
+  <a href="/monitoring" class="btn-primary text-xs mt-2 inline-block"
+    >Open Grafana</a
+  >
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="card-glow">
+    <h3 class="mb-2">CPU Usage</h3>
+    <canvas id="cpuChart"></canvas>
+  </div>
+
+  <div class="card-glow">
+    <h3 class="mb-2">Memory Usage</h3>
+    <canvas id="memoryChart"></canvas>
+  </div>
+</div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  window.onload = function () {
+    const cpuData = {
+      labels: [],
+      datasets: [
+        {
+          label: "CPU %",
+          data: [],
+          borderColor: "#38bdf8",
+          tension: 0.4,
+        },
+      ],
+    };
+
+    const memoryData = {
+      labels: [],
+      datasets: [
+        {
+          label: "Memory %",
+          data: [],
+          backgroundColor: "#22c55e",
+        },
+      ],
+    };
+
+    const cpuChart = new Chart(document.getElementById("cpuChart"), {
+      type: "line",
+      data: cpuData,
+    });
+
+    const memoryChart = new Chart(document.getElementById("memoryChart"), {
+      type: "bar",
+      data: memoryData,
+    });
+
+    function updateCharts() {
+      const time = new Date().toLocaleTimeString();
+
+      const cpuValue = Math.floor(Math.random() * 40) + 40;
+      const memValue = Math.floor(Math.random() * 30) + 40;
+
+      if (cpuData.labels.length > 6) {
+        cpuData.labels.shift();
+        cpuData.datasets[0].data.shift();
+      }
+
+      if (memoryData.labels.length > 6) {
+        memoryData.labels.shift();
+        memoryData.datasets[0].data.shift();
+      }
+
+      cpuData.labels.push(time);
+      cpuData.datasets[0].data.push(cpuValue);
+
+      memoryData.labels.push(time);
+      memoryData.datasets[0].data.push(memValue);
+
+      cpuChart.update();
+      memoryChart.update();
+    }
+
+    setInterval(updateCharts, 2000);
+  };
+</script>
+
+{% endblock %}

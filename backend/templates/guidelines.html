@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Deployment Guidelines – Scalable Cloud-Native DevOps Platform</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+      body {
+        overflow-x: hidden;
+        background: #020617;
+        color: white;
+      }
+
+      .bg-grid {
+        background-image:
+          linear-gradient(
+            to right,
+            rgba(255, 255, 255, 0.05) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.05) 1px,
+            transparent 1px
+          );
+
+        background-size: 45px 45px;
+      }
+
+      .glass-card {
+        background: rgba(15, 23, 42, 0.72);
+
+        border: 1px solid rgba(148, 163, 184, 0.12);
+
+        backdrop-filter: blur(24px);
+
+        border-radius: 28px;
+
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+
+        transition: all 0.35s ease;
+      }
+
+      .glass-card:hover {
+        transform: translateY(-8px);
+
+        border-color: rgba(56, 189, 248, 0.45);
+
+        box-shadow:
+          0 25px 60px rgba(0, 0, 0, 0.55),
+          0 0 30px rgba(56, 189, 248, 0.15);
+      }
+
+      .text-gradient {
+        background: linear-gradient(90deg, #38bdf8, #a855f7);
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+    </style>
+  </head>
+
+  <body class="min-h-screen">
+    <!-- GRID -->
+    <div class="absolute inset-0 bg-grid opacity-[0.05]"></div>
+
+    <!-- BLOBS -->
+    <div class="absolute inset-0 overflow-hidden -z-10">
+      <div
+        class="absolute -top-32 -left-20 h-80 w-80 rounded-full bg-sky-500/20 blur-[100px]"
+      ></div>
+
+      <div
+        class="absolute top-40 right-0 h-80 w-80 rounded-full bg-purple-500/20 blur-[100px]"
+      ></div>
+
+      <div
+        class="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-emerald-500/20 blur-[100px]"
+      ></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 py-10 relative z-10">
+      <!-- TOP -->
+      <div class="flex items-center justify-between mb-10">
+        <a
+          href="/dashboard"
+          class="rounded-full border border-slate-700 bg-slate-900/80 px-5 py-2 text-xs text-slate-200 hover:border-sky-400 hover:text-sky-300 transition"
+        >
+          ← Back to Dashboard
+        </a>
+
+        <div
+          class="flex items-center gap-3 rounded-full border border-yellow-500/20 bg-yellow-500/10 px-4 py-2 text-xs text-yellow-300"
+        >
+          <span class="h-2 w-2 rounded-full bg-yellow-400 animate-pulse"></span>
+          Deployment Validation Active
+        </div>
+      </div>
+
+      <!-- TITLE -->
+      <div class="text-center mb-16">
+        <h1 class="text-6xl font-bold leading-tight">
+          Deployment
+          <span class="text-gradient"> Guidelines </span>
+        </h1>
+
+        <p class="mt-6 text-lg text-slate-300 max-w-3xl mx-auto leading-8">
+          Important deployment prerequisites, operational recommendations,
+          security checks and best practices before executing Terraform
+          templates and infrastructure automation.
+        </p>
+      </div>
+
+      <!-- GUIDELINES GRID -->
+      <div class="grid gap-8 md:grid-cols-2">
+        <!-- DO'S -->
+        <div class="glass-card p-8">
+          <h2 class="text-3xl font-bold text-emerald-300 mb-8">🟢 DO's</h2>
+
+          <ul class="space-y-5 text-sm text-slate-300 leading-7">
+            <li>✔ Configure AWS CLI properly using valid credentials.</li>
+
+            <li>
+              ✔ Keep Terraform installed and initialized before deployment.
+            </li>
+
+            <li>✔ Ensure Docker and Kubernetes are properly configured.</li>
+
+            <li>✔ Maintain valid AWS IAM permissions.</li>
+
+            <li>✔ Keep ports 22, 80 and 443 open where required.</li>
+
+            <li>✔ Verify VPC, Subnets, Route Tables and Internet Gateway.</li>
+
+            <li>✔ Push complete and tested source code to GitHub.</li>
+
+            <li>✔ Use only validated Terraform templates.</li>
+
+            <li>✔ Monitor deployment logs continuously during execution.</li>
+
+            <li>
+              ✔ Maintain proper naming conventions for infrastructure resources.
+            </li>
+
+            <li>
+              ✔ Keep sufficient AWS Free Tier quota and billing checks enabled.
+            </li>
+
+            <li>
+              ✔ Store Terraform state files securely using remote state
+              management.
+            </li>
+          </ul>
+        </div>
+
+        <!-- DON'TS -->
+        <div class="glass-card p-8">
+          <h2 class="text-3xl font-bold text-red-300 mb-8">🔴 DON'Ts</h2>
+
+          <ul class="space-y-5 text-sm text-slate-300 leading-7">
+            <li>
+              ❌ Do not delete the default VPC without replacement
+              configuration.
+            </li>
+
+            <li>❌ Do not remove Internet Gateway from public subnets.</li>
+
+            <li>❌ Do not expose AWS Secret Keys publicly.</li>
+
+            <li>❌ Do not block ports 22, 80 or 443 unnecessarily.</li>
+
+            <li>
+              ❌ Do not upload incomplete or corrupted Terraform templates.
+            </li>
+
+            <li>❌ Do not disable IAM permissions required for deployment.</li>
+
+            <li>❌ Do not modify terraform.tfstate manually.</li>
+
+            <li>
+              ❌ Do not terminate infrastructure resources during deployment.
+            </li>
+
+            <li>
+              ❌ Do not hardcode sensitive credentials inside Terraform files.
+            </li>
+
+            <li>❌ Do not exceed AWS Free Tier limits unknowingly.</li>
+
+            <li>
+              ❌ Do not ignore Terraform plan output before apply operation.
+            </li>
+
+            <li>
+              ❌ Do not deploy applications without monitoring and logging
+              enabled.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- EXTRA SECTION -->
+      <div class="mt-12 glass-card p-8">
+        <h3 class="text-2xl font-semibold text-sky-300 mb-6">
+          🚀 Recommended Deployment Flow
+        </h3>
+
+        <div
+          class="flex flex-wrap items-center justify-center gap-4 text-sm text-slate-300"
+        >
+          <div class="rounded-2xl bg-slate-900/70 px-5 py-4">
+            GitHub Repository
+          </div>
+
+          ➜
+
+          <div class="rounded-2xl bg-slate-900/70 px-5 py-4">
+            Terraform Validation
+          </div>
+
+          ➜
+
+          <div class="rounded-2xl bg-slate-900/70 px-5 py-4">Docker Build</div>
+
+          ➜
+
+          <div class="rounded-2xl bg-slate-900/70 px-5 py-4">
+            Kubernetes Deployment
+          </div>
+
+          ➜
+
+          <div class="rounded-2xl bg-slate-900/70 px-5 py-4">
+            AWS Infrastructure
+          </div>
+
+          ➜
+
+          <div class="rounded-2xl bg-slate-900/70 px-5 py-4">
+            Monitoring & Logs
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <footer
+        class="mt-20 border-t border-slate-800 pt-8 text-sm text-slate-500"
+      >
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>© 2026 Scalable Cloud-Native DevOps Platform</div>
+
+          <div>AWS • Terraform • Docker • Kubernetes • Grafana</div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

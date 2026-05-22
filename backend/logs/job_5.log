@@ -1,0 +1,37 @@
+Job #5 - Template: web_server
+Working directory: D:\cloud-deploy-engine - Copy\backend\..\infra\jobs\job_5
+------------------------------------------------------------
+
+>>> Running: terraform init -input=false
+
+[0m[1mInitializing the backend...[0m
+[0m[1mInitializing provider plugins...[0m
+- Finding hashicorp/aws versions matching "~> 5.0"...
+- Installing hashicorp/aws v5.100.0...
+- Installed hashicorp/aws v5.100.0 (signed by HashiCorp)
+Terraform has created a lock file [1m.terraform.lock.hcl[0m to record the provider
+selections it made above. Include this file in your version control repository
+so that Terraform can guarantee to make the same selections by default when
+you run "terraform init" in the future.[0m
+
+[0m[1m[32mTerraform has been successfully initialized![0m[32m[0m
+[0m[32m
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.[0m
+>>> Running: terraform apply -auto-approve -input=false
+
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1mRetrieving AWS account details: validating provider credentials: retrieving caller identity from STS: operation error STS: GetCallerIdentity, https response error StatusCode: 400, RequestID: b0950753-acbb-45a0-9bf0-fe64e079e795, api error IncompleteSignature: Invalid key=value pair (missing key) in Authorization header (hashed with SHA-256 and encoded with Base64): 'a2g4TDFLrU6b4PsIAH7JWkEu/tbNVVEgm578Gs2/PBU='.[0m
+[31m│[0m [0m
+[31m│[0m [0m[0m  with provider["registry.terraform.io/hashicorp/aws"],
+[31m│[0m [0m  on main.tf line 12, in provider "aws":
+[31m│[0m [0m  12: provider "aws" [4m{[0m[0m
+[31m│[0m [0m
+[31m╵[0m[0m
+
+Command failed with exit code 1

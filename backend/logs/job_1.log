@@ -1,0 +1,20 @@
+Job #1 - Template: web_server
+Working directory: D:\cloud-deploy-engine - Copy\backend\..\infra\jobs\job_1
+------------------------------------------------------------
+
+>>> Running: terraform init -input=false
+
+[0m[1mInitializing the backend...[0m
+[0m[1mInitializing provider plugins...[0m
+- Finding hashicorp/aws versions matching "~> 5.0"...
+- Installing hashicorp/aws v5.100.0...
+[31m╷[0m[0m
+[31m│[0m [0m[1m[31mError: [0m[0m[1mFailed to install provider[0m
+[31m│[0m [0m
+[31m│[0m [0m[0mError while installing hashicorp/aws v5.100.0: releases.hashicorp.com: read
+[31m│[0m [0mtcp
+[31m│[0m [0m[2402:e280:411a:a8:ed3a:fea4:ac86:835]:63523->[2600:9000:213c:c000:5:e2b6:b380:93a1]:443:
+[31m│[0m [0mwsarecv: An existing connection was forcibly closed by the remote host.
+[31m╵[0m[0m
+
+Command failed with exit code 1
